@@ -1,4 +1,7 @@
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+
 
 
 # Create your models here.
@@ -15,6 +18,19 @@ class Product(models.Model):
     rating = models.FloatField()
     discount = models.IntegerField(default=0)
     quantity = models.IntegerField(default=0)
+    order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
+
+    class Meta:
+        ordering = ('order',)
+
+    @property
+    def discounted_price(self):
+        if self.discount > 0:
+            return self.price * (1 - self.discount / 100)
+        return self.price
+
+    def __str__(self):
+        return self.name
 
     def get_attributes(self) -> list[dict]:
         product_attributes = ProductAttribute.objects.filter(product=self)
@@ -25,15 +41,6 @@ class Product(models.Model):
                 'attribute_value':pa.attribute_value.value_name
             }) # [ {},{},{}]
         return attributes
-
-    @property
-    def discounted_price(self):
-        if self.discount > 0:
-            return self.price * (1 - self.discount / 100)
-        return self.price
-
-    def __str__(self):
-        return self.name
 
 
 class Image(models.Model):
@@ -61,3 +68,4 @@ class ProductAttribute(models.Model):
     product = models.ForeignKey('app.Product', on_delete=models.CASCADE)
     attribute = models.ForeignKey('app.Attribute', on_delete=models.CASCADE)
     attribute_value = models.ForeignKey('app.AttributeValue', on_delete=models.CASCADE)
+

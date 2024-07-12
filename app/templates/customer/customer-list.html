@@ -375,11 +375,22 @@
                             <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span
                                     class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span
                                     class="d-none d-sm-inline-block ms-1">Filter</span></button>
+                           <!-- Export form -->
+                            <form action="{% url 'export_data' %}" method="get">
+                                <label for="format" style="margin-right: 5px;">Export as:</label>
+                                <select id="format" name="format">
+                                    <option value="none" selected>...</option>
+                                    <option value="json">json</option>
+                                    <option value="xlsx">xlsx</option>
+                                    <option value="csv">csv</option>
+                                </select>
+                                <button class="btn btn-falcon-default btn-sm" type="submit">
+                                    <span class="fas fa-external-link-alt"
+                                          data-fa-transform="shrink-3 down-2"></span>
+                                    <span class="d-none d-sm-inline-block ms-1">Export</span>
+                                </button>
+                            </form>
 
-                            <button class="btn btn-falcon-default btn-sm" type="submit"><span
-                                    class="fas fa-external-link-alt"
-                                    data-fa-transform="shrink-3 down-2"></span><span
-                                    class="d-none d-sm-inline-block ms-1">Export</span></button>
                         </div>
                     </div>
                 </div>
