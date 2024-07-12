@@ -97,13 +97,13 @@ def export_data(request):
     elif format == 'xlsx':
         response = HttpResponse(content_type='application/vnd.ms-excel')
 
-        wb = Workbook()
-        ws = wb.active
-        ws.title = 'Customers'
-        ws.append(['Name', 'Email', 'Phone', 'Billing Address'])
-        for obj in model.objects.all().values_list('name', 'email', 'phone', 'billing_address'):
-            ws.append(obj)
-        wb.save(response)
+        workbook_ = Workbook()
+        work_sheet = workbook_.active
+        work_sheet.title = 'Customers'
+        work_sheet.append(['Fullname', 'Email', 'Phone', 'Billing Address'])
+        for obj in model.objects.all().values_list('full_name', 'email', 'phone_number', 'address'):
+            work_sheet.append(obj)
+        workbook_.save(response)
         response['Content-Disposition'] = 'attachment; filename=customers.xlsx'
     else:
         response = HttpResponse(status=404)
