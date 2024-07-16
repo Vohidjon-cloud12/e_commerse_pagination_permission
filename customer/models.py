@@ -25,10 +25,10 @@ class Customer(models.Model):
     def __str__(self):
         return self.email
 
-    class Meta:
-        ordering = ('-joined',)
-        verbose_name_plural = 'Customers'
-        # verbose_name = 'Xaridor'
+    # class Meta:
+    #     ordering = ('-joined',)
+    #     verbose_name_plural = 'Customers'
+    #     # verbose_name = 'Xaridor'
 
 
 class User(AbstractBaseUser, PermissionsMixin):

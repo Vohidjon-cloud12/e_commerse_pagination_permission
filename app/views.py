@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 from app.forms import ProductForm, ProductModelForm
 from app.models import Product
-
+# from authentication.forms import LoginForm, RegisterForm, EmailForm
 
 # Create your views here.
 

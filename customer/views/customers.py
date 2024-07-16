@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q, TextField
 from pyexpat import model
 
-from customer.forms import CustomerModelForm
+from customer.forms import CustomerModelForm, EmailForm
 from customer.models import Customer
 from openpyxl import Workbook
 
@@ -121,22 +121,25 @@ from django.shortcuts import render
 class SendMailView(View):
     # ... (get metodini o'zgartirmasdan qoldiramiz)
 
-    def post(self, request):
-        # Ma'lumotlarni olish va HTML shablonini render qilish
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
+    class SendEmailView(View):
+        def get(self, request):
+            form = EmailForm()
+            context = {'form': form}
+            return render(request, 'customer/send-mail.html', context)
 
-        context = {'name': name, 'message': message}
-        html_message = render_to_string('customer/mail_template.html', context)
-        plain_message = strip_tags(html_message)
+        def post(self, request):
+            form = EmailForm(request.POST)
+            if form.is_valid():
+                subject = form.cleaned_data['subject']
+                email_from = form.cleaned_data['email_from']
+                email_to = [form.cleaned_data['email_to']]
+                message = form.cleaned_data['message']
+                try:
+                    send_mail(subject, message, email_from, email_to)
+                    messages.success(request, 'Message sent successfully.')
+                    return redirect('customers')
+                except Exception as e:
+                    messages.error(request, f'Error sending message: {e}')
 
-        # Pochta xabarni yuborish
-        subject = 'Assalomu alaykum!'
-        from_email = 'sender@example.com'
-        to_email = 'recipient@example.com'
-        send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
-
-        # Agar muvaffaqiyatli yuborilsa, foydalanuvchiga xabar beramiz
-        return HttpResponse('Pochta xabari muvaffaqiyatli yuborildi!')
+            context = {'form': form}
+            return render(request, 'customer/send-mail.html', context)

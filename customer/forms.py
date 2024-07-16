@@ -60,4 +60,9 @@ class UserModelForm(forms.ModelForm):
         model = User
         exclude = ()
 
+class EmailForm(forms.Form):
+    subject = forms.CharField(max_length=100)
+    message = forms.CharField(widget=forms.Textarea)
+    email_from = forms.EmailField()
+    email_to = forms.EmailField()
 

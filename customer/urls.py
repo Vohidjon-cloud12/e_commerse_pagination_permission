@@ -14,5 +14,5 @@ urlpatterns = [
     path('logout-page/', logout_page, name='logout'),
     path('register-page/', RegisterFormView.as_view(), name='register'),
     path('export-data/', export_data, name='export_data'),
-    path('send-mail/', SendMailView.as_view(), name='send_mail'),
+    path('send-mail/', SendMailView.as_view(), name='send-mail'),
 ]
