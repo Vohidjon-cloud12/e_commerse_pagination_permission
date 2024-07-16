@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Mail Form</title>
+    <style>
+        /* CSS stilini shu yerdan qo'shing */
+        /* Masalan: */
+        .send-mail-button {
+            background-color: #0074D9;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Forma -->
+    <form action="/send-mail/" method="post">
+        {% csrf_token %}
+        <label for="name">Ism:</label>
+        <input type="text" id="name" name="name" required><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        <label for="phone">Telefon raqami:</label>
+        <input type="tel" id="phone" name="phone" required><br>
+        <label for="message">Xabar:</label>
+        <textarea id="message" name="message" rows="4" required></textarea><br>
+        <button class="send-mail-button" type="submit">Send Mail</button>
+    </form>
+</body>
+</html>

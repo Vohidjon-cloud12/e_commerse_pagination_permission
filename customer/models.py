@@ -20,7 +20,7 @@ class Customer(models.Model):
     joined = models.DateTimeField(default=datetime.now())
     image = models.ImageField(upload_to='customer/', null=True, blank=True)
     is_active = models.BooleanField(default=False)
-    order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
+
 
     def __str__(self):
         return self.email

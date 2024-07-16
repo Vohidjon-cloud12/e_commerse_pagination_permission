@@ -18,10 +18,10 @@ class Product(models.Model):
     rating = models.FloatField()
     discount = models.IntegerField(default=0)
     quantity = models.IntegerField(default=0)
-    order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
+    # order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
 
-    class Meta:
-        ordering = ('order',)
+    # class Meta:
+    #     ordering = ('order',)
 
     @property
     def discounted_price(self):

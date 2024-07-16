@@ -100,7 +100,7 @@ def export_data(request):
         workbook_ = Workbook()
         work_sheet = workbook_.active
         work_sheet.title = 'Customers'
-        work_sheet.append(['Fullname', 'Email', 'Phone', 'Billing Address'])
+        work_sheet.append(['Fullname', 'Email', 'Phone', 'Address'])
         for obj in model.objects.all().values_list('full_name', 'email', 'phone_number', 'address'):
             work_sheet.append(obj)
         workbook_.save(response)
@@ -109,3 +109,34 @@ def export_data(request):
         response = HttpResponse(status=404)
         response.content = 'Bad request'
     return response
+
+
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.views import View
+from django.http import HttpResponse
+from django.shortcuts import render
+
+class SendMailView(View):
+    # ... (get metodini o'zgartirmasdan qoldiramiz)
+
+    def post(self, request):
+        # Ma'lumotlarni olish va HTML shablonini render qilish
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+
+        context = {'name': name, 'message': message}
+        html_message = render_to_string('customer/mail_template.html', context)
+        plain_message = strip_tags(html_message)
+
+        # Pochta xabarni yuborish
+        subject = 'Assalomu alaykum!'
+        from_email = 'sender@example.com'
+        to_email = 'recipient@example.com'
+        send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
+
+        # Agar muvaffaqiyatli yuborilsa, foydalanuvchiga xabar beramiz
+        return HttpResponse('Pochta xabari muvaffaqiyatli yuborildi!')
