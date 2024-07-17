@@ -565,25 +565,6 @@
                     {% endif %}
                 </span>
         </div>
-            <div>
-             <form class="send-mail-button" action="/send-mail/" method="post">
-        {% csrf_token %}
-        <label for="subject">Subject:</label>
-        <input type="text" name="subject"><br>
-         <label for="message">Xabar:</label>
-         <textarea id="message" name="message" rows="4" required></textarea><br>
-         <label for="email">Email From:</label>
-         <input type="email" id="email_from" name="email_from" required><br>
-         <label for="email">Email to:</label>
-         <input type="email" id="email_to" name="email_to" required><br>
-{#         <label for="phone">Telefon raqami:</label>#}
-{#         <input type="tel" id="phone" name="phone" required><br>#}
-{#        <button class="send-mail-button" type="submit" >Send Mail</button>#}
-    </form>
-            </div>
-               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sendMailModal">
-        Send Mail
-    </button>
 
     <!-- Send Mail Modal -->
     {% include 'customer/send-mail.html' %}

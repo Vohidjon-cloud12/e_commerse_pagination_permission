@@ -1,8 +1,7 @@
 from django.urls import path
 
 from customer.views.auth import logout_page, LoginView, RegisterFormView
-from customer.views.customers import customers_page, add_customer, delete_customer, edit_customer, export_data, \
-    SendMailView
+from customer.views.customers import customers_page, add_customer, delete_customer, edit_customer, export_data, SendEmailView
 
 urlpatterns = [
     path('customer-list/', customers_page, name='customers'),
@@ -14,5 +13,5 @@ urlpatterns = [
     path('logout-page/', logout_page, name='logout'),
     path('register-page/', RegisterFormView.as_view(), name='register'),
     path('export-data/', export_data, name='export_data'),
-    path('send-mail/', SendMailView.as_view(), name='send-mail'),
+    path('send-mail/', SendEmailView.as_view(), name='send-mail'),
 ]
