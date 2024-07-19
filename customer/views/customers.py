@@ -143,3 +143,6 @@ class SendEmailView(View):
 
         context = {'form': form}
         return render(request, 'customer/send-mail.html', context)
+
+
+# class MultiEmailFild(forms.)

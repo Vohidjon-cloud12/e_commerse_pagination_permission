@@ -1,6 +1,6 @@
 from django import forms
-
 from customer.models import Customer, User
+from django_recaptcha.fields import ReCaptchaField
 
 
 class CustomerModelForm(forms.ModelForm):
@@ -33,7 +33,9 @@ class LoginForm(forms.Form):
 
 
 class RegisterModelForm(forms.ModelForm):
+    password = forms.CharField(max_length=255,widget=forms.PasswordInput)
     confirm_password = forms.CharField(max_length=255)
+    recaptcha=ReCaptchaField()
 
     class Meta:
         model = User

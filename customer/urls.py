@@ -1,6 +1,6 @@
 from django.urls import path
 
-from customer.views.auth import logout_page, LoginView, RegisterFormView
+from customer.views.auth import logout_page, LoginView, RegisterFormView,activate
 from customer.views.customers import customers_page, add_customer, delete_customer, edit_customer, export_data, SendEmailView
 
 urlpatterns = [
@@ -14,4 +14,6 @@ urlpatterns = [
     path('register-page/', RegisterFormView.as_view(), name='register'),
     path('export-data/', export_data, name='export_data'),
     path('send-mail/', SendEmailView.as_view(), name='send-mail'),
+    path('activate/<uidb64>/<token>/',activate, name='activate')
+
 ]

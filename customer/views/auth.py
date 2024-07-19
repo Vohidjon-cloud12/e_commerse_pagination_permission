@@ -1,10 +1,20 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from customer.forms import LoginForm, RegisterModelForm
+from django.contrib import messages
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.template.loader import render_to_string
 from django.views import View
 from django.views.generic import FormView
+from django.template.loader import render_to_string
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import EmailMessage
+from customer.tokens import account_activation_token
+from customer.models import Customer
 
-from customer.forms import LoginForm, RegisterModelForm
 
 
 # def login_page(request):
@@ -95,4 +105,41 @@ class EmailSenderView(View):
 
         send_mail(subject, body, from_email, recipient_list)
 
-        return render(request, 'success_template.html')  #
+        return render(request, 'success_template.html')
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = Customer.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, Customer.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        messages.success(request, 'Your account activated successfully!')
+        return redirect('customers')
+    else:
+        messages.error(request, 'Activation link is invalid!')
+        return redirect('register')
+
+
+def activate_email(request, user, to_email):
+    subject = 'Activate your account'
+    message = render_to_string('auth/account-activation.html', {
+        'user': user.username,
+        'domain': get_current_site(request).domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.id)),
+        'protocol': 'https' if request.is_secure() else 'http',
+        'token': account_activation_token.make_token(user),
+    })
+    email = EmailMessage(subject, message, to=[to_email])
+    try:
+        email.send()
+        messages.success(request,
+                         'Activation link sent to your email address. '
+                         'Please activate your account.')
+    except Exception as e:
+        messages.error(request, f'Sorry, there was an error : {str(e)}')

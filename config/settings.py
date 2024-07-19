@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'app',
     'customer.apps.CustomerConfig',
     'import_export',
+    'django_recaptcha'
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,8 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'vohidjonboyqoziyev@gmail.com'
 EMAIL_HOST_PASSWORD = 'shvj obnq gcjk play'
+
+
+PASSWORD_RESET_TIMEOUT = 240
+RECAPTCHA_PUBLIC_KEY = ' 6LchaBMqAAAAACW2565N_AOLhWnwyMRaPpBiOjnB'
+RECAPTCHA_PRIVATE_KEY = '6LchaBMqAAAAAH8G-7yijFEXpus_9Bs6HPSEoalR'
